@@ -1,0 +1,10 @@
+[package]
+name = "bin2lang"
+version = "1.0.0"
+edition = "2021"
+description = "A hyper-extensible byte array generator powered by a Lua plugin engine."
+
+[dependencies]
+anyhow = "1.0.86"
+clap = { version = "4.5.8", features = ["derive"] }
+mlua = { version = "0.9.8", features = ["lua54", "vendored"] }
