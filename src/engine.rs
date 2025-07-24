@@ -28,6 +28,7 @@ pub fn run(config: &Config) -> Result<String> {
     api_table.set("array_type", config.array_type.clone())?;
     api_table.set("python_type", config.python_type.clone())?;
     api_table.set("rust_type", config.rust_type.clone())?;
+    api_table.set("indent", config.indent)?;
 
     // 4. API 테이블을 Lua 전역 변수 'BIN2LANG'으로 설정
     lua.globals().set("BIN2LANG", api_table)?;

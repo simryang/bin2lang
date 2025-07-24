@@ -38,4 +38,8 @@ pub struct Config {
     /// Array type for output (Rust, default: "u8")
     #[arg(long, default_value = "u8")]
     pub rust_type: String,
+
+    /// Indent size for output (default: 4)
+    #[arg(long, default_value_t = 4)]
+    pub indent: usize,
 }
