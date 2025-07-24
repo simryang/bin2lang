@@ -70,12 +70,28 @@ fn main() -> Result<()> {
         )
     })?;
 
-    if config.output_file.is_some() {
-        let path = config.output_file.as_ref().unwrap();
-        fs::write(path, result)
+    if let Some(output_path) = &config.output_file {
+        use std::path::{Path, PathBuf};
+        let mut path: PathBuf = output_path.clone();
+        // output_path가 파일명만 있을 때(경로 구분자 없음, . 또는 ..로 시작하지 않음)
+        let is_filename_only = output_path.components().count() == 1
+            && !output_path.to_string_lossy().starts_with("./")
+            && !output_path.to_string_lossy().starts_with(".\\")
+            && !output_path.to_string_lossy().starts_with("..")
+            && !output_path.to_string_lossy().contains('/')
+            && !output_path.to_string_lossy().contains('\\');
+        if is_filename_only {
+            // 입력 파일과 동일한 폴더에 저장
+            let input_dir = config.input_file.parent().unwrap_or(Path::new("."));
+            path = input_dir.join(output_path);
+        }
+        fs::write(&path, result)
             .with_context(|| format!("Failed to write to output file: {}", path.display()))?;
         if config.verbose {
-            println!("✅ Successfully generated file: {}", path.display());
+            let full_path = fs::canonicalize(&path).unwrap_or(path.clone());
+            let full_path_str = full_path.to_string_lossy();
+            let shown_path = full_path_str.trim_start_matches("\\\\?\\");
+            println!("✅ Successfully generated file: {}", shown_path);
         }
     } else {
         println!("{}", result);
