@@ -20,11 +20,14 @@ pub fn run(config: &Config) -> Result<String> {
     // 3a. 바이트 데이터를 Lua 테이블로 변환
     let data_lua = lua.create_table_from(data.iter().enumerate().map(|(i, &byte)| (i + 1, byte)))?;
     api_table.set("data", data_lua)?;
-    
+
     // 3b. 나머지 설정 값들을 추가
     api_table.set("array_name", config.array_name.clone())?;
     api_table.set("input_file", config.input_file.to_string_lossy().into_owned())?;
     api_table.set("output_file", config.output_file.as_ref().map(|p| p.to_string_lossy().into_owned()))?;
+    api_table.set("array_type", config.array_type.clone())?;
+    api_table.set("python_type", config.python_type.clone())?;
+    api_table.set("rust_type", config.rust_type.clone())?;
 
     // 4. API 테이블을 Lua 전역 변수 'BIN2LANG'으로 설정
     lua.globals().set("BIN2LANG", api_table)?;

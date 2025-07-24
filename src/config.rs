@@ -22,4 +22,20 @@ pub struct Config {
     /// Disable the default null terminator (0x00) at the end of the array.
     #[arg(long)]
     pub no_null: bool,
+
+    /// Number of items per line in output arrays (default: 16)
+    #[arg(long, default_value_t = 16)]
+    pub line_length: usize,
+
+    /// Array type for output (C, default: "const unsigned char")
+    #[arg(long, default_value = "const unsigned char")]
+    pub array_type: String,
+
+    /// Array type for output (Python, default: "bytes")
+    #[arg(long, default_value = "bytes")]
+    pub python_type: String,
+
+    /// Array type for output (Rust, default: "u8")
+    #[arg(long, default_value = "u8")]
+    pub rust_type: String,
 }
