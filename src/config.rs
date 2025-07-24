@@ -2,8 +2,9 @@ use clap::Parser;
 use std::path::PathBuf;
 
 #[derive(Parser, Debug, Clone)]
-#[command(version, about, long_about = None)]
+#[command(version, about, long_about = None, disable_version_flag = true)]
 pub struct Config {
+
     /// Language plugin to use from the 'plugins' directory (e.g., 'c', 'python').
     #[arg(short = 'l', long)]
     pub lang: String,
@@ -42,4 +43,11 @@ pub struct Config {
     /// Indent size for output (default: 4)
     #[arg(long, default_value_t = 4)]
     pub indent: usize,
+    /// Print verbose log
+    #[arg(short = 'v', long, default_value_t = false)]
+    pub verbose: bool,
+
+    /// Print version info and exit
+    #[arg(long, default_value_t = false)]
+    pub version: bool,
 }
