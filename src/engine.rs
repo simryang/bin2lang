@@ -1,6 +1,6 @@
 use crate::config::Config;
 use anyhow::{Context, Result};
-use mlua::{Lua, Value as LuaValue};
+use mlua::Lua;
 use std::fs;
 
 pub fn run(config: &Config) -> Result<String> {
