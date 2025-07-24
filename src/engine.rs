@@ -33,16 +33,41 @@ pub fn run(config: &Config) -> Result<String> {
     // 4. API 테이블을 Lua 전역 변수 'BIN2LANG'으로 설정
     lua.globals().set("BIN2LANG", api_table)?;
 
-    // 5. 플러그인 스크립트 파일 읽기
+    // 5. 플러그인 스크립트 파일 읽기 (없으면 C 변환 fallback)
     let plugin_path = format!("plugins/{}.lua", config.lang);
-    let plugin_script = fs::read_to_string(&plugin_path)
-        .with_context(|| format!("Failed to load plugin: '{}'. Make sure it exists in the 'plugins' directory.", plugin_path))?;
-
-    // 6. 플러그인 실행 및 결과 받기
-    let result: String = lua.load(&plugin_script)
-        .set_name(&plugin_path)
-        .eval()
-        .with_context(|| format!("Error executing plugin '{}'", plugin_path))?;
-
-    Ok(result)
+    let plugin_script = fs::read_to_string(&plugin_path);
+    if config.lang == "c" && plugin_script.is_err() {
+        // Fallback: Rust에서 직접 C array 변환
+        let indent = " ".repeat(config.indent);
+        let line_length = config.line_length;
+        let array_type = &config.array_type;
+        let array_name = &config.array_name;
+        let mut out = String::new();
+        out.push_str(&format!("// bin2lang generated (fallback)\n{} {}[] = {{\n", array_type, array_name));
+        for (i, byte) in data.iter().enumerate() {
+            if i % line_length == 0 {
+                out.push_str(&indent);
+            }
+            out.push_str(&format!("0x{:02X}", byte));
+            if i != data.len() - 1 {
+                out.push(',');
+            }
+            if (i + 1) % line_length == 0 || i == data.len() - 1 {
+                out.push_str("\n");
+            } else {
+                out.push(' ');
+            }
+        }
+        out.push_str("};\n");
+        Ok(out)
+    } else {
+        // 6. 플러그인 실행 및 결과 받기
+        let plugin_script = plugin_script
+            .with_context(|| format!("Failed to load plugin: '{}'. Make sure it exists in the 'plugins' directory.", plugin_path))?;
+        let result: String = lua.load(&plugin_script)
+            .set_name(&plugin_path)
+            .eval()
+            .with_context(|| format!("Error executing plugin '{}'", plugin_path))?;
+        Ok(result)
+    }
 }

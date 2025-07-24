@@ -1,3 +1,4 @@
+-- version: 0.1.0, released: 2025-07-25 02:00:00
 local api = BIN2LANG
 local output = {}
 table.insert(output, string.format("# Generated from '%s' by bin2lang", api.input_file))

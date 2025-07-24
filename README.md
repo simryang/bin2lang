@@ -38,34 +38,40 @@ bin2lang/
 ## 사용법
 ### 기본 변환
 ```powershell
+bin2lang.exe -l c "D:\경로\파일명.bin"
+```
+또는
+```powershell
 cargo run -- -l c "D:\경로\파일명.bin"
 ```
 - `-l`, `--lang`: 변환할 언어 (c, python, rust)
 - 파일 경로: 변환할 바이너리 파일
 
+※ 참고: `cargo run -- ...`에서 `--`는 cargo 명령어와 실행할 프로그램(bin2lang)의 옵션을 구분하기 위한 구분자입니다. 즉, cargo run의 옵션과 실제 프로그램의 옵션이 혼동되지 않도록, `--` 뒤에 bin2lang의 옵션을 적어줍니다.
+
 ### 출력 파일 지정
 ```powershell
-cargo run -- -l c "D:\경로\파일명.bin" -o output.c
+bin2lang.exe -l c "D:\경로\파일명.bin" -o output.c
 ```
 - `-o`, `--output-file`: 결과를 파일로 저장
 
 ### 배열명 지정
 ```powershell
-cargo run -- -l c "D:\경로\파일명.bin" --array-name my_array
+bin2lang.exe -l c "D:\경로\파일명.bin" --array-name my_array
 ```
 - `--array-name`: 배열 변수명 지정
 
 ### 널 종료 바이트 미포함
 ```powershell
-cargo run -- -l c "D:\경로\파일명.bin" --no-null
+bin2lang.exe -l c "D:\경로\파일명.bin" --no-null
 ```
 - `--no-null`: 배열 끝에 널 바이트(0x00) 미포함
 
 ### 배열 타입/파이썬 타입/러스트 타입 지정
 ```powershell
-cargo run -- -l c "D:\경로\파일명.bin" --array-type "static const unsigned char"
-cargo run -- -l python "D:\경로\파일명.bin" --python-type "bytes"
-cargo run -- -l rust "D:\경로\파일명.bin" --rust-type "u8"
+bin2lang.exe -l c "D:\경로\파일명.bin" --array-type "static const unsigned char"
+bin2lang.exe -l python "D:\경로\파일명.bin" --python-type "bytes"
+bin2lang.exe -l rust "D:\경로\파일명.bin" --rust-type "u8"
 ```
 - `--array-type`: C 배열 타입 지정
 - `--python-type`: Python 배열 타입 지정
@@ -73,15 +79,15 @@ cargo run -- -l rust "D:\경로\파일명.bin" --rust-type "u8"
 
 ### 라인 길이 및 인덴트 지정
 ```powershell
-cargo run -- -l c "D:\경로\파일명.bin" --line-length 32 --indent 2
+bin2lang.exe -l c "D:\경로\파일명.bin" --line-length 32 --indent 2
 ```
 - `--line-length`: 한 줄에 출력할 배열 원소 개수
 - `--indent`: 들여쓰기(공백) 개수
 
 ### 상세 로그 및 버전 정보 출력
 ```powershell
-cargo run -- -l c "D:\경로\파일명.bin" -v
-cargo run -- --version
+bin2lang.exe -l c "D:\경로\파일명.bin" -v
+bin2lang.exe --version
 ```
 - `-v`, `--verbose`: 상세 로그 및 버전 정보 출력
 - `--version`: bin2lang 및 플러그인 버전 정보 출력 후 종료
@@ -104,6 +110,8 @@ cargo run -- --version
 
 ## 변경 내역 (Changelog)
 
+### v0.1.0 (2025-07-25)
+- 첫 공식 릴리즈
 - CLI 옵션 통합 및 구조 개선 (`Config` 기반)
 - --array-type, --python-type, --rust-type, --indent, --line-length 등 세부 옵션 추가
 - -v 옵션으로 상세 로그 및 버전 정보 출력 기능 추가
