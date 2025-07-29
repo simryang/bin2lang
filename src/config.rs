@@ -6,7 +6,7 @@ use std::path::PathBuf;
 pub struct Config {
 
     /// Language plugin to use from the 'plugins' directory (e.g., 'c', 'python').
-    #[arg(short = 'l', long)]
+    #[arg(short = 'l', long, default_value = "c")]
     pub lang: String,
 
     /// Input file to convert.
