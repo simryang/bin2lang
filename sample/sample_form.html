@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>bin2lang 샘플 폼</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        .form-group { margin-bottom: 1em; }
+        label { display: block; margin-bottom: 0.5em; }
+        input[type="text"] { width: 300px; padding: 0.5em; }
+        .radio-group { margin-top: 0.5em; }
+        button { padding: 0.5em 1.5em; font-size: 1em; }
+    </style>
+</head>
+<body>
+    <h1>bin2lang 샘플 폼</h1>
+    <form>
+        <div class="form-group">
+            <label for="username">사용자 이름</label>
+            <input type="text" id="username" name="username" placeholder="이름을 입력하세요">
+        </div>
+        <div class="form-group">
+            <label>언어 선택</label>
+            <div class="radio-group">
+                <input type="radio" id="lang-c" name="lang" value="c" checked>
+                <label for="lang-c">C</label>
+                <input type="radio" id="lang-python" name="lang" value="python">
+                <label for="lang-python">Python</label>
+                <input type="radio" id="lang-rust" name="lang" value="rust">
+                <label for="lang-rust">Rust</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="comment">코멘트</label>
+            <input type="text" id="comment" name="comment" placeholder="간단한 메모">
+        </div>
+        <button type="submit">제출</button>
+    </form>
+</body>
+</html>
